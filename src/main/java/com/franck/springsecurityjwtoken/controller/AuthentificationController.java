@@ -73,24 +73,4 @@ public class AuthentificationController {
         }
     }
 
-    // Avant création du user :
-    // {
-    //     "username":"franck",
-    //     "password":"password123",
-    //     "role":"USER"
-    // }
-    //
-    // Après register, création du user : franck; password123, USER
-    // {
-    //     "id": 3,
-    //     "username": "franck",
-    //     "password": "$2a$10$0TH0HLsN3M5ZE0s1DkxKPOAyQ63hdu9N0P3sQLfe6IEWxRUsa8BGm",
-    //     "role": "USER"
-    // }
-    // Après login :
-    // {
-    //     "type": "Bearer ",
-    //     "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJmcmFuY2syIiwiaWF0IjoxNzI5OTM2Nzg1LCJleHAiOjE3Mjk5Mzc2ODV9.miShEdXJ4Ha1y-bqZh5kbSIyuGFVEtf-gj9GytNuNaY"
-    // }
-
 }

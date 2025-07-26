@@ -52,7 +52,7 @@ public class JwtFilter extends OncePerRequestFilter {
             UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
             // on récupère userDetails pour regarder la validité du token
             if (jwtUtils.isValidToken(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 // le setDetails ci-dessous permet de récupérer des infos d'authent supplémentaires
                 authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 // le token est valide, on considère que l'utilisateur est authentifié

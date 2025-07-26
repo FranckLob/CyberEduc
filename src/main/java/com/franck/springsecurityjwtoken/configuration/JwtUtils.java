@@ -14,12 +14,10 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
-import javax.crypto.spec.SecretKeySpec;
-import java.util.Base64;
-
 @Component
 public class JwtUtils {
 
+    //clé codée en base 64
     private String secretKey = "9a4f2c8d3b7a1e6f45c8a0b3f267d8b1d4e6f3c8a9d2b5f8e3a9c8b5f6v8a3d9";
 
     @Value("${app.expiration-time}")
@@ -45,9 +43,9 @@ public class JwtUtils {
     }
 
     // cryptographic signing of the JWT (making it a JWS)
+    // La méthode signWith() accepte les instances Key ou SecretKey et l'algorithme de signature comme arguments. 
+    // L'algorithme Hash-based Message Authentication Code (HMAC) est l'un des algorithmes de signature les plus couramment utilisés.
     private javax.crypto.SecretKey getSignKey() {
-        //return new SecretKeySpec(secretKey.getBytes(), "HS256");
-        //return Jwts.SIG.HS256.key().build();
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
