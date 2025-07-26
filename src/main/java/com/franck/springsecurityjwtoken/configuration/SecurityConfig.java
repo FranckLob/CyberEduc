@@ -43,6 +43,7 @@ public class SecurityConfig {
         return authenticationManagerBuilder.build();
     }
 
+    // Filtre du jwt avant (addFilterBefore)
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
