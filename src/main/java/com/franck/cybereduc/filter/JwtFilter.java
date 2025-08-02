@@ -1,4 +1,4 @@
-package com.franck.springsecurityjwtoken.filter;
+package com.franck.cybereduc.filter;
 
 import java.io.IOException;
 
@@ -9,14 +9,13 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.franck.springsecurityjwtoken.service.CustomUserDetailsService;
+import com.franck.cybereduc.configuration.JwtUtils;
+import com.franck.cybereduc.service.CustomUserDetailsService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import com.franck.springsecurityjwtoken.configuration.JwtUtils;
 
 // chaque requête doit être filtrée par le jwt
 @Component

@@ -1,4 +1,4 @@
-package com.franck.springsecurityjwtoken.configuration;
+package com.franck.cybereduc.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.franck.springsecurityjwtoken.filter.JwtFilter;
-import com.franck.springsecurityjwtoken.service.CustomUserDetailsService;
+import com.franck.cybereduc.filter.JwtFilter;
+import com.franck.cybereduc.service.CustomUserDetailsService;
 
 // @Configuration car #Beans dans la classe; @EnableWebSecurity pour activer la sécurité
 @Configuration

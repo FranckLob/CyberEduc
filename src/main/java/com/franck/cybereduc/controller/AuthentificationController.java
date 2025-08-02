@@ -1,4 +1,4 @@
-package com.franck.springsecurityjwtoken.controller;
+package com.franck.cybereduc.controller;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.franck.springsecurityjwtoken.configuration.JwtUtils;
-import com.franck.springsecurityjwtoken.model.DBUser;
-import com.franck.springsecurityjwtoken.repository.DBUserRepository;
+import com.franck.cybereduc.configuration.JwtUtils;
+import com.franck.cybereduc.model.DBUser;
+import com.franck.cybereduc.repository.DBUserRepository;
 
 @RestController
 @RequestMapping("/api/auth")
