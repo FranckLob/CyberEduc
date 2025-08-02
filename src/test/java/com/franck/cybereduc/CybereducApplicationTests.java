@@ -1,10 +1,10 @@
-package com.franck.springsecurityjwtoken;
+package com.franck.cybereduc;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringsecurityjwtokenApplicationTests {
+class CybereducApplicationTests {
 
 	@Test
 	void contextLoads() {

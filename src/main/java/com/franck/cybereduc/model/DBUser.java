@@ -1,4 +1,4 @@
-package com.franck.springsecurityjwtoken.model;
+package com.franck.cybereduc.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

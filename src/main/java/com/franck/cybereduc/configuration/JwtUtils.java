@@ -1,4 +1,4 @@
-package com.franck.springsecurityjwtoken.configuration;
+package com.franck.cybereduc.configuration;
 
 import java.util.Date;
 import java.util.Map;
