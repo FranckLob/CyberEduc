@@ -13,6 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>cybereduc</name>
 	<description>CyberEduc project</description>
+	<packaging>jar</packaging>
 	<url/>
 	<licenses>
 		<license/>
@@ -26,10 +27,18 @@
 		<tag/>
 		<url/>
 	</scm>
+
 	<properties>
-		<java.version>17</java.version>
+		<java.version>19</java.version>
+		<json-token-version>0.12.6</json-token-version>
+		<openapi-version>2.6.0</openapi-version>
+		<!-- <lombok.version>1.8.38</lombok.version>	
+		<mapstruct.version>1.6.3</mapstruct.version>
+		<hibernate.version>7.1.0.CR1</hibernate.version> -->
 	</properties>
+
 	<dependencies>
+		<!-- SPRING BOOT -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -44,49 +53,119 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- SPRING SECURITY -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- JPA (includes Hibernate) -->
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<dependency>
+		<!-- BASES DE DONNEES -->
+		<!-- <dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<scope>runtime</scope>
+		</dependency> -->
+		<dependency>
+    		<groupId>org.postgresql</groupId>
+    		<artifactId>postgresql</artifactId>
+    		<version>42.7.7</version>
 		</dependency>
+		<!-- JWT -->
 		<!-- Les dépendances suivantes permettent de générer et signer un JWT et de l'intégrer dans Spring Security -->
 		<!-- jwt-api -->
 		<dependency>
     		<groupId>io.jsonwebtoken</groupId>
     		<artifactId>jjwt-api</artifactId>
-    		<version>0.12.6</version>
+    		<version>${json-token-version}</version>	
 		</dependency>
 		<!-- jjwt-impl -->
 		<dependency>
     		<groupId>io.jsonwebtoken</groupId>
     		<artifactId>jjwt-impl</artifactId>
-    		<version>0.12.6</version>
+    		<version>${json-token-version}</version>
     		<scope>runtime</scope>
 		</dependency>
 		<!-- jjwt-jackson -->
 		<dependency>
     		<groupId>io.jsonwebtoken</groupId>
     		<artifactId>jjwt-jackson</artifactId>
-    		<version>0.12.6</version>
+    		<version>${json-token-version}</version>
     		<scope>runtime</scope>
+		</dependency>
+		<!-- SWAGGER -->
+		<!-- compatible versions : https://springdoc.org/#what-is-the-compatibility-matrix-of-springdoc-openapi-with-spring-boot -->
+		<dependency>
+    		<groupId>org.springdoc</groupId>
+    		<artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+    		<version>${openapi-version}</version>
 		</dependency>
 
 	</dependencies>
 
+	<!-- LOMBOK MAPSTRUCT HIBERNATE -->
 	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<!-- Compiles JAVA source -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+					<annotationProcessPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<!-- <version>${lombok.version}</version> -->
+						</path>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<!-- <version>${mapstruct.version}</version> -->
+						</path>
+						<path>
+							<groupId>org.hibernate</groupId>
+							<artifactId>hibernate-jpamodelgen</artifactId>
+							<!-- <version>${hibernate.version}</version> -->
+						</path>
+					</annotationProcessPaths>
+				</configuration>
+			</plugin>
+			<plugin>	
+				<!-- Copy the resources to the output directory -->
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-resources</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>copy-resources</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>target/classes</outputDirectory>
+							<useDefaultDelimiters>false</useDefaultDelimiters>
+							<delimiters>
+								<delimiter>#</delimiter>
+							</delimiters>
+							<resources>
+								<resource>
+									<directory>src/main/resources</directory>
+									<filtering>true</filtering>
+								</resource>
+							</resources>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>

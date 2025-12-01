@@ -1,5 +1,7 @@
 package com.franck.cybereduc.service;
 
+import java.util.Optional;
+
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,12 +23,12 @@ public class CustomUserDetailsService implements UserDetailsService{
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        DBUser dbUser = dbUserRepository.findDbUserByUsername(username);
-        if (dbUser == null) {
+        Optional<DBUser> dbUser = dbUserRepository.findDbUserByUsername(username);
+        if (dbUser.isEmpty()) {
             throw new UsernameNotFoundException("DBUser not found : " + username);
         }
         // le user de spring security ici
-        return new User(dbUser.getUsername(), dbUser.getPassword(), java.util.Collections.singletonList(new SimpleGrantedAuthority(dbUser.getRole().toString())));
+        return new User(dbUser.get().getUsername(), dbUser.get().getPassword(), java.util.Collections.singletonList(new SimpleGrantedAuthority(dbUser.get().getRole().toString())));
     }
 
 }
