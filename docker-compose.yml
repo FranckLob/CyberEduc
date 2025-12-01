@@ -1,0 +1,53 @@
+volumes:
+  cybereduc-data:
+
+networks:
+  cybereduc-network:
+    name: cybereduc-network
+
+services:
+
+  db:
+    image: 'postgres:latest'
+    container_name: db
+    user: postgres
+    environment:
+      - POSTGRES_DB=cybereduc
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+    networks:
+      - cybereduc-network
+    volumes:
+      - cybereduc-data:/var/lib/postgresql/cybereduc-data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cybereduc"]
+      interval: 10s
+      timeout: 30s
+      retries: 5
+  
+  # cybereduc:
+  #   build: .
+  #   container_name: cybereduc
+  #   environment:
+  #     - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/cybereduc
+  #     - SPRING_DATASOURCE_USERNAME=postgres
+  #     - SPRING_DATASOURCE_PASSWORD=postgres
+  #   ports:
+  #     - 8080:8080
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   networks:
+  #     - cybereduc-network
+
+  # swagger:
+  #   image: 'swaggerapi/swagger-ui:v5.27.1'
+  #   container_name: swagger
+  #   environment:
+  #     - URL=http://localhost:8080/v3/api-docs
+  #   ports:
+  #     - 8081:8080
+  #   networks:
+  #     - cybereduc-network

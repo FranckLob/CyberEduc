@@ -18,9 +18,10 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtils {
 
     //clé codée en base 64
-    private String secretKey = "9a4f2c8d3b7a1e6f45c8a0b3f267d8b1d4e6f3c8a9d2b5f8e3a9c8b5f6v8a3d9";
+    @Value("${application.security.authentication.jwt.base64-secret}")
+    private String secretKey;
 
-    @Value("${app.expiration-time}")
+    @Value("${application.security.authentication.jwt.expiration-time}")
     private long expirationTime;
 
     //--------------- génération et création du token ---------------

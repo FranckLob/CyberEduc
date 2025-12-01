@@ -34,6 +34,12 @@ public class DBUser {
         this.password = password;
         this.role = role;
     }
+    
+    public DBUser(String username, String password, Role role) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+    }
 
     public Integer getId() {
         return id;
