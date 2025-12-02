@@ -61,7 +61,7 @@ public class AuthentificationController {
         if (dbUserRepository.findDbUserByUsername(userDto.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body(creationImpossible);
         }
-        // seulement deux admins
+        // Au plus deux admins
         if (dbUserRepository.countByRole(Role.valueOf("ROLE_ADMIN")) > 2) {
              return ResponseEntity.badRequest().body(creationImpossible);
         }
@@ -73,26 +73,20 @@ public class AuthentificationController {
     @PostMapping(path = "/login", consumes = "application/json", produces = "application/json")
     public ResponseEntity<?> login(@RequestBody UserDto userDto) {
         try {
-            // on essaie d'authentifier l'utilisateur; UsernamePasswordAuthenticationToken
-            // utilise le username et le password du Principal reçu du serveur
-            // l'objet de type Authentication nous permet de savoir si le user est
-            // authentifié ou non
+            // on essaie d'authentifier l'utilisateur;
+            // UsernamePasswordAuthenticationToken utilise le username et le password du Principal reçu du serveur;
+            // l'objet de type Authentication nous permet de savoir si le user est authentifié ou non
             Authentication authentication = authenticationManager
-                    .authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
-            // si le user qui s'est signé est authentifié, alors on peut créer un token de
-            // type Bearer associé
-            if (authentication.isAuthenticated()) {
-                Map<String, Object> authData = new HashMap<>();
-                authData.put("token", jwtUtils.generateToken(userDto.getUsername()));
-                authData.put("type", "Bearer ");
-                return ResponseEntity.ok(authData);
-            } else {
-                return ResponseEntity.badRequest().body("Invalid username or password");
-            }
-
+                     .authenticate(new UsernamePasswordAuthenticationToken(userDto.getUsername(), userDto.getPassword()));
+            authentication.isAuthenticated();
         } catch (AuthenticationException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+        // le user qui s'est signé est authentifié, alors on peut créer un token de type Bearer associé
+        Map<String, Object> authData = new HashMap<>();
+        authData.put("token", jwtUtils.generateToken(userDto.getUsername()));
+        authData.put("type", "Bearer ");
+        return ResponseEntity.ok(authData);
     }
 
 }
