@@ -8,7 +8,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +17,6 @@ import com.franck.cybereduc.configuration.JwtUtils;
 import com.franck.cybereduc.dto.UserDto;
 import com.franck.cybereduc.model.DBUser;
 import com.franck.cybereduc.model.Role;
-import com.franck.cybereduc.repository.DBUserRepository;
 import com.franck.cybereduc.service.DBUserService;
 
 import io.swagger.v3.oas.annotations.Hidden;
@@ -29,44 +27,36 @@ public class AuthentificationController {
 
     private static final String creationImpossible = "Création impossible";
 
-    private final DBUserRepository dbUserRepository;
     private final DBUserService dbUserService;
     private final AuthenticationManager authenticationManager;
     private final JwtUtils jwtUtils;
 
-    public AuthentificationController(DBUserRepository dbUserRepository, DBUserService dbUserService,
-            AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
-        this.dbUserRepository = dbUserRepository;
+    public AuthentificationController(DBUserService dbUserService, AuthenticationManager authenticationManager, JwtUtils jwtUtils) {
         this.dbUserService = dbUserService;
         this.authenticationManager = authenticationManager;
         this.jwtUtils = jwtUtils;
     }
 
     @PostMapping(path = "/register", consumes = "application/json", produces = "application/json")
-    @Transactional
     public ResponseEntity<?> register(@RequestBody UserDto userDto) {
-        if (dbUserRepository.findDbUserByUsername(userDto.getUsername()).isPresent()) {
+        if (dbUserService.getUserByUsername(userDto.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body(creationImpossible);
         }
         DBUser user = this.dbUserService.createDBUser(userDto.getUsername(), userDto.getPassword());
-        // on peut désormais sauvegarder
-        dbUserRepository.save(user);
         return ResponseEntity.ok(String.join(" ", "user", "\"", user.getUsername(), "\"", "créé !"));
     }
 
     @Hidden
     @PostMapping(path = "/register/admin", consumes = "application/json", produces = "application/json")
-    @Transactional
     public ResponseEntity<?> registerAdmin(@RequestBody UserDto userDto) {
-        if (dbUserRepository.findDbUserByUsername(userDto.getUsername()).isPresent()) {
+        if (dbUserService.getUserByUsername(userDto.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body(creationImpossible);
         }
         // Au plus deux admins
-        if (dbUserRepository.countByRole(Role.valueOf("ROLE_ADMIN")) > 2) {
+        if (dbUserService.countNumberOfUsersByRole(Role.ROLE_ADMIN) > 2) {
              return ResponseEntity.badRequest().body(creationImpossible);
         }
         DBUser user = this.dbUserService.createDBAdmin(userDto.getUsername(), userDto.getPassword());
-        dbUserRepository.save(user);
         return ResponseEntity.ok(String.join(" ", "user", "\"", user.getUsername(), "\"", "créé !"));
     }
 

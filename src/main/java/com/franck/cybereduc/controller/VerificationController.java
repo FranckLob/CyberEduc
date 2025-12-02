@@ -8,16 +8,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.franck.cybereduc.model.DBUser;
 import com.franck.cybereduc.model.Role;
-import com.franck.cybereduc.repository.DBUserRepository;
+import com.franck.cybereduc.service.DBUserService;
 
 @RestController
 @RequestMapping("/api")
 public class VerificationController {
 
-    private final DBUserRepository dbUserRepository;
+    private final DBUserService dbUserService;
 
-    public VerificationController(DBUserRepository dbUserRepository) {
-        this.dbUserRepository = dbUserRepository;
+    public VerificationController(DBUserService dbUserService) {
+        this.dbUserService = dbUserService;
     }
     
     @GetMapping(path = "/verification")
@@ -27,7 +27,7 @@ public class VerificationController {
 
     @GetMapping(path = "/users")
     public String getUsers() {
-        return dbUserRepository.findAll()
+        return dbUserService.getAllUsers()
             .stream()
             .filter(user -> user.getRole() == Role.ROLE_USER)
             .map(DBUser::getUsername)
@@ -37,7 +37,7 @@ public class VerificationController {
 
     @GetMapping(path = "/admin/users")
     public String getAdmins() {
-        return dbUserRepository.findAll()
+        return dbUserService.getAllUsers()
             .stream()
             .filter(user -> user.getRole() == Role.ROLE_ADMIN)
             .map(DBUser::getUsername)
